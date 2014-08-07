@@ -1,0 +1,134 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% block title %}This is an example page{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">TEST</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <!--
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    -->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" data-toggle="modal" data-target="#myWriteModal">Write</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Link <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="http://flask.pocoo.org">Flask</a></li>
+            <li><a href="http://pythonhosted.org/Flask-Bootstrap">Flask-Bootstrap</a></li>
+            <li class="divider"></li>
+            <li><a href="http://wikidocs.net/book/1">Jump To Python</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Hello</h1>
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success" role="alert">
+{{ message }}
+</div>
+{% endfor %}
+<div class="list-group">
+{% for entry in entries %}
+<span class="list-group-item">
+  <a href="javascript:delMemo('{{entry[0]}}');" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">DELETE</span></a>
+  <h4 class="list-group-item-heading">{{ entry[1] }}</h4>
+  <p class="list-group-item-text">{{ entry[2].replace("\n","<br>")|safe }}</p>
+</span>
+{% endfor %}
+</div>
+
+<div class="modal fade" id="myWriteModal" tabindex="-1" role="dialog" aria-labelledby="myWriteModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">Write New Memo</div>
+      <div class="modal-body">
+        <form role="form" action="{{ url_for('write') }}" method=post>
+        <div class="form-group">
+          <div class="input-group input-group-lg">
+            <label for="title">title</label>
+            <input type="text" class="form-control" placeholder="title" id="title" name="title" />
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="memo">memo</label>
+            <textarea class="form-control" rows="5" placeholder="memo" id="memo" name="memo"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myDeleteModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">Delete Memo</div>
+      <div class="modal-body">
+        <form role="form" action="{{ url_for('delete') }}" method=post>
+        <input type="hidden" name="id" value="4" />
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">DELETE</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block head %}
+{{super()}}
+{{fixes.ie8()}}
+<script>
+function delMemo(id) {
+  $("#myDeleteModal").find("form input[name=id]").val(id);
+  $("#myDeleteModal").modal();
+}
+</script>
+{% endblock %}
