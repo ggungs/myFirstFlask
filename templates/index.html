@@ -82,7 +82,7 @@
     <div class="modal-content">
       <div class="modal-header">Write New Memo</div>
       <div class="modal-body">
-        <form role="form" action="{{ url_for('write') }}" method=post>
+        <form role="form" action="{{ url_for('memo_app.write') }}" method=post>
         <div class="form-group">
           <div class="input-group input-group-lg">
             <label for="title">title</label>
@@ -108,7 +108,7 @@
     <div class="modal-content">
       <div class="modal-header">Delete Memo</div>
       <div class="modal-body">
-        <form role="form" action="{{ url_for('delete') }}" method=post>
+        <form role="form" action="{{ url_for('memo_app.delete') }}" method=post>
         <input type="hidden" name="id" value="4" />
         <div class="form-group">
           <button type="submit" class="btn btn-primary">DELETE</button>
